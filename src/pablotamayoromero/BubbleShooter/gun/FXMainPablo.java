@@ -6,12 +6,10 @@
 package pablotamayoromero.BubbleShooter.gun;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
@@ -21,30 +19,35 @@ import javafx.stage.Stage;
  */
 
 public class FXMainPablo extends Application {
-    float anguloDisparo = 50;
-    float anchoX = 100;
+    final int ANCHO_PANTALLA = 200;
+    final int ALTO_PANTALLA = 200;
+    float anguloDisparo = 45;
+    float anchoX = 200;
     double resultadoY;
     
     
     @Override
     public void start(Stage primaryStage) {
-        StackPane root = new StackPane();
-        Scene scene = new Scene(root, 400, 400);
+        Pane root = new Pane();
+        Scene scene = new Scene(root, ANCHO_PANTALLA, ALTO_PANTALLA);
         primaryStage.setTitle("Main Pablo");
         primaryStage.setScene(scene);
         primaryStage.show();
+        double radian = Math.toRadians(anguloDisparo);
+        resultadoY = Math.tan(radian)*anchoX;
         
-        resultadoY = Math.tan(anguloDisparo)* anchoX;
         System.out.println(resultadoY);
-        
-        Polygon triangulo = new Polygon(new double[]{
-            0,resultadoY,
-            0,200,
-            anchoX,200
-        });
-        triangulo.setVisible(true);
-        triangulo.setFill(Color.BLACK);
-        root.getChildren().addAll(triangulo);
+        float resulAncho = ANCHO_PANTALLA/2;
+        Line line = new Line(resulAncho, ALTO_PANTALLA, ANCHO_PANTALLA, resultadoY);
+//        Polygon triangulo = new Polygon(new double[]{
+//            resulAncho,ALTO_PANTALLA,
+//            ANCHO_PANTALLA,0,
+//            ANCHO_PANTALLA, resultadoY
+//            
+//        });
+//        triangulo.setVisible(false);
+//        triangulo.setFill(Color.BLACK);
+        root.getChildren().addAll(line);
     }
 
     /**
