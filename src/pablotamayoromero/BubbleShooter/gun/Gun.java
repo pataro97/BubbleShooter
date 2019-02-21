@@ -1,19 +1,16 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package pablotamayoromero.BubbleShooter.gun;
+
+import javafx.scene.shape.Line;
 
 /**
  *
- * @author pablo
+ * @author usuario
  */
-
 public class Gun {
-    float anguloDisparo = 20;
-    float anchoX = 10;
-    double resultadoY;
-    public void handle(long now){
-        
-        resultadoY = Math.tan(anguloDisparo)* anchoX;
-        
-    };
-        
-    
+    Line line = new Line(0, 0, 0, 0);
 }
