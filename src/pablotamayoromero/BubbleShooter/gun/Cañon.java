@@ -5,12 +5,10 @@
  */
 package pablotamayoromero.BubbleShooter.gun;
 
-import javafx.scene.shape.Line;
-
 /**
  *
  * @author usuario
  */
-public class Gun {
-    Line line = new Line(0, 0, 0, 0);
+public class Cañon {
+    
 }

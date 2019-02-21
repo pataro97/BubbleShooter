@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pablotamayoromero.BubbleShooter.gun;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
 /**
@@ -19,13 +12,14 @@ import javafx.stage.Stage;
  */
 
 public class FXMainPablo extends Application {
-    final int ANCHO_PANTALLA = 200;
-    final int ALTO_PANTALLA = 200;
-    float anguloDisparo = 45;
-    float anchoX = 200;
+    final int ANCHO_PANTALLA = 400;
+    final int ALTO_PANTALLA = 400;
+    double anguloDisparo = 179.99;
+    double anguloDisparoR = anguloDisparo;
     double resultadoY;
-    
-    
+    double resultadoFinalY;
+    double radian;
+    float resulAncho;
     @Override
     public void start(Stage primaryStage) {
         Pane root = new Pane();
@@ -33,21 +27,37 @@ public class FXMainPablo extends Application {
         primaryStage.setTitle("Main Pablo");
         primaryStage.setScene(scene);
         primaryStage.show();
-        double radian = Math.toRadians(anguloDisparo);
-        resultadoY = Math.tan(radian)*anchoX;
         
-        System.out.println(resultadoY);
-        float resulAncho = ANCHO_PANTALLA/2;
-        Line line = new Line(resulAncho, ALTO_PANTALLA, ANCHO_PANTALLA, resultadoY);
-//        Polygon triangulo = new Polygon(new double[]{
-//            resulAncho,ALTO_PANTALLA,
-//            ANCHO_PANTALLA,0,
-//            ANCHO_PANTALLA, resultadoY
-//            
-//        });
-//        triangulo.setVisible(false);
-//        triangulo.setFill(Color.BLACK);
-        root.getChildren().addAll(line);
+        if (anguloDisparo > 89.99){
+            anguloDisparo -= 90;
+            radian = Math.toRadians(anguloDisparo);
+            resultadoY = Math.tan(radian)*(ANCHO_PANTALLA/2);
+            resultadoFinalY = ALTO_PANTALLA - resultadoY;
+            
+        }else{
+            radian = Math.toRadians(anguloDisparo);
+            resultadoY = Math.tan(radian)*(ANCHO_PANTALLA/2);
+            resultadoFinalY = ALTO_PANTALLA - resultadoY;
+            
+        }
+        resulAncho = ANCHO_PANTALLA/2;
+        // -------------------------Linea
+        Line line = new Line(resulAncho, ALTO_PANTALLA, ANCHO_PANTALLA, resultadoFinalY);
+        line.setVisible(false);
+        // -------------------------Linea 2
+        Line line2 = new Line(0, resultadoFinalY, resulAncho, ALTO_PANTALLA);
+        line2.setVisible(false);
+        
+        // Chapuza
+        if (anguloDisparoR > 89.99){
+            line2.setVisible(true);
+        }else{
+            line.setVisible(true);
+        }
+        
+        System.out.println(anguloDisparo);
+        
+        root.getChildren().addAll(line, line2);
     }
 
     /**
