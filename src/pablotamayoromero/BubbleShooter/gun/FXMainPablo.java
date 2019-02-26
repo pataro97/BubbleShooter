@@ -54,16 +54,20 @@ public class FXMainPablo extends Application {
         //Escribe x pelota
         xPelota = resulAncho;
         //pelota
-        Circle pelota = new Circle(xPelota, yPelota, 3);
+        Circle pelota = new Circle(xPelota, yPelota, 4);
         //Animation Generar triangulo movimiento pelota
          AnimationTimer pelotaAnimation = new AnimationTimer(){
              @Override
               public void handle(long now){
                 if(resultadoFinalY < yPelota){
+                    yPelota--;
                     
+                    System.out.println(yPelota);
                 }
+                pelota.setCenterY(yPelota);
               }
-         };
+              
+         }; 
         // Chapuza  
         if (anguloDisparoR > 89.99){
             line2.setVisible(true);
