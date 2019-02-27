@@ -1,12 +1,16 @@
 package pablotamayoromero.BubbleShooter.gun;
 
-import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
 
 /**
  *
@@ -16,7 +20,7 @@ import javafx.stage.Stage;
 public class FXMainPablo extends Application {
     final int ANCHO_PANTALLA = 400;
     final int ALTO_PANTALLA = 400;
-    double anguloDisparo = 100.0;
+    double anguloDisparo = 91.0;
     double anguloDisparoR = anguloDisparo;
     double resultadoY;
     double resultadoFinalY;
@@ -24,6 +28,12 @@ public class FXMainPablo extends Application {
     float resulAncho;
     double xPelota;
     double yPelota = ALTO_PANTALLA;
+    double radianCircle;
+    double resultadoYCircle;
+    double resultadoFinalYCircle;
+    double sumHcircle;
+    double resXcircle;
+    double resultadoXCircle;
     @Override
     public void start(Stage primaryStage) {
         Pane root = new Pane();
@@ -55,20 +65,26 @@ public class FXMainPablo extends Application {
         xPelota = resulAncho;
         //pelota
         Circle pelota = new Circle(xPelota, yPelota, 4);
-        //Animation Generar triangulo movimiento pelota
-         AnimationTimer pelotaAnimation = new AnimationTimer(){
-             @Override
-              public void handle(long now){
+        //TimeLine Generar triangulo movimiento pelota
+         Timeline animationCircle = new Timeline(
+            new KeyFrame(Duration.seconds(0.017), new EventHandler<ActionEvent>() {
+               public void handle(ActionEvent ae) {
                 if(resultadoFinalY < yPelota){
-                    yPelota--;
-                    
-                    System.out.println(yPelota);
+                    sumHcircle += 1;
+                    radianCircle = Math.toRadians(anguloDisparo);
+                    resultadoYCircle = Math.sin(radianCircle)*(sumHcircle);
+                    resultadoXCircle = Math.cos(radianCircle)*(sumHcircle);
+                    yPelota = ALTO_PANTALLA - resultadoYCircle;
+                    resXcircle = (ANCHO_PANTALLA/2)-resultadoXCircle;
+                    System.out.println(resXcircle);
                 }
+                
+                pelota.setCenterX(resXcircle);
                 pelota.setCenterY(yPelota);
-              }
-              
-         }; 
-        // Chapuza  
+             }
+            })                
+        );
+        // Chapuza
         if (anguloDisparoR > 89.99){
             line2.setVisible(true);
         }else{
@@ -77,7 +93,8 @@ public class FXMainPablo extends Application {
         
         
         // Iniciar animacion pelota
-        pelotaAnimation.start();
+        animationCircle.setCycleCount(Timeline.INDEFINITE);
+        animationCircle.play();
         root.getChildren().addAll(line, line2, pelota);
     }
 
