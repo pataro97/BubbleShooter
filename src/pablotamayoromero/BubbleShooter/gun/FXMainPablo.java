@@ -10,6 +10,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 
 /**
@@ -20,12 +21,12 @@ import javafx.util.Duration;
 public class FXMainPablo extends Application {
     final int ANCHO_PANTALLA = 400;
     final int ALTO_PANTALLA = 400;
-    double anguloDisparo = 91.0;
-    double anguloDisparoR = anguloDisparo;
+    double anguloDisparo = 109.9;
+    double anguloDisparoRegis = anguloDisparo;
     double resultadoY;
     double resultadoFinalY;
     double radian;
-    float resulAncho;
+    float mitadAnchoPantalla;
     double xPelota;
     double yPelota = ALTO_PANTALLA;
     double radianCircle;
@@ -34,6 +35,9 @@ public class FXMainPablo extends Application {
     double sumHcircle;
     double resXcircle;
     double resultadoXCircle;
+    double sumLine;
+    double resLine;
+    double puntoLine;
     @Override
     public void start(Stage primaryStage) {
         Pane root = new Pane();
@@ -54,15 +58,36 @@ public class FXMainPablo extends Application {
             resultadoFinalY = ALTO_PANTALLA - resultadoY;
             
         }
-        resulAncho = ANCHO_PANTALLA/2;
+        mitadAnchoPantalla = ANCHO_PANTALLA/2;
+        
         // -------------------------Linea
-        Line line = new Line(resulAncho, ALTO_PANTALLA, ANCHO_PANTALLA, resultadoFinalY);
+        Line line = new Line(mitadAnchoPantalla, ALTO_PANTALLA, ANCHO_PANTALLA, resultadoFinalY);
         line.setVisible(false);
         // -------------------------Linea 2
-        Line line2 = new Line(0, resultadoFinalY, resulAncho, ALTO_PANTALLA);
+        Line line2 = new Line(0, resultadoFinalY, mitadAnchoPantalla, ALTO_PANTALLA);
         line2.setVisible(false);
+        
+        // Animacion linea
+        Timeline animationLine = new Timeline(
+            new KeyFrame(Duration.seconds(0.017), new EventHandler<ActionEvent>() {
+               public void handle(ActionEvent ae) {
+                line.setEndX(100);
+                line.setEndY(90.10);
+                System.out.println(resultadoFinalY);
+                line2.setStartY(puntoLine = resultadoFinalY + sumLine);
+            
+                // Mirar si el angulo introducido inicialmente es mayor de 90 y dependiendo de este dato poner visible una linea u otra
+                if (anguloDisparoRegis > 89.99){
+                    line2.setVisible(true);
+                }else{
+                    line.setVisible(true);
+                }
+               }
+               })
+        );
+            
         //Escribe x pelota
-        xPelota = resulAncho;
+        xPelota = mitadAnchoPantalla;
         //pelota
         Circle pelota = new Circle(xPelota, yPelota, 4);
         //TimeLine Generar triangulo movimiento pelota
@@ -84,17 +109,31 @@ public class FXMainPablo extends Application {
              }
             })                
         );
-        // Chapuza
-        if (anguloDisparoR > 89.99){
-            line2.setVisible(true);
-        }else{
-            line.setVisible(true);
-        }
         
         
-        // Iniciar animacion pelota
-        animationCircle.setCycleCount(Timeline.INDEFINITE);
-        animationCircle.play();
+        // Control del cañon
+        scene.setOnKeyPressed((KeyEvent pulsatecla) -> {
+           switch(pulsatecla.getCode()) {
+               case LEFT:
+                   //Pulsa tecla izquierda
+                   anguloDisparo--;
+                   sumLine++;
+               break;
+               case RIGHT:
+                   //Pulsa tecla derecha
+                   anguloDisparo++;
+                   resLine--;
+                break;
+               case SPACE:
+                // Disparar pelota al pulsar
+                // Iniciar animacion pelota
+                animationCircle.setCycleCount(Timeline.INDEFINITE);
+                animationCircle.play(); 
+                break;
+           }
+        });
+        animationLine.setCycleCount(Timeline.INDEFINITE);
+        animationLine.play();
         root.getChildren().addAll(line, line2, pelota);
     }
 
