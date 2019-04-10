@@ -3,7 +3,7 @@ package es.antoniomanuelramirez.BubbleShooter.diseñoBurbujas;
 
 
 public class Burbujas {
-    TableroView tableroView = new TableroView();
+//    TableroView tableroView = new TableroView();
     public char[][] matrizTablero = new char[5][5];
     
     public Burbujas() {

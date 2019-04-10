@@ -5,49 +5,69 @@
  */
 package albertomateos.BubbleShooter.logica;
 
-import bubbleshooter.BubbleShooter;
+import javafx.application.Application;
+import static javafx.application.Application.launch;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+
+
+
 
 /**
  *
  * @author PC07
  */
-public class Logica {
-    
-    public static void main(String[] args) {
-        BubbleShooter bubbleshooter= new BubbleShooter();
-        bubbleshooter.mostrarTablero();
-        bubbleshooter.ponerBola();
-         System.out.println("");
-         
-         bubbleshooter.ponerbola(1,1,1,1,1,1,1,1,1);
-         bubbleshooter.ponerbola(1,0,1,0,1,0,1,0,1);
-         bubbleshooter.ponerbola(1,1,1,0,0,0,1,1,1);
-         bubbleshooter.mostrarTablero();
-    }
-    int[][] matrizTablero = new int[9][9];
-    public void mostrarTablero() {
-        for(int i=0; i<9; i++) {
-            for(int j=0; j<9; j++) {
-                System.out.print(matrizTablero[i][j]);
-        for(int y=0; y<9; y++) {
-            for(int x=0; x<9; x++) {
-                System.out.print(matrizTablero[x][y]);
+public class Logica extends Application {
+    public void start(Stage primaryStage) {
+        
+        TableroView tableroView = new TableroView();
+        
+        BubbleShooter bubbleshooter = new BubbleShooter();
+        bubbleshooter.ponerBola(0, 1, '1');
+        
+        
+        for(int y=0; y<7; y++) {
+            for(int x=0; x<7
+                    ; x++) {
+                switch(bubbleshooter.matrizTablero[x][y]) {
+                    
+                    case '0':
+                        tableroView.rellenarCasilla(x,y);
+                        break;
+                    case '1':
+                        tableroView.ponerBola(x, y, '1');
+                        break;
+                    case '2':
+                        tableroView.ponerBola(x, y, '2');
+                        break;
+                    case '3':
+                        tableroView.ponerBola(x, y, '3');
+                        break;
+                       
                 }
-            System.out.println();
-            }
-        }
+            }            
+        }  
+        
+        StackPane root = new StackPane();
+        root.getChildren().add(tableroView.getGridTablero());
+         
+        Scene scene = new Scene(root, 400, 400);
+        
+        
+        primaryStage.setTitle("Bubble Shooter");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+   
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
     }
 }
-     public void ponerFicha() {
-        matrizTablero[9][9] = 1;
-        matrizTablero[9][8] = 2;
-     }
-        
-     public void ponerFicha(int x, int y, int jugador) {
-        matrizTablero [x][y] = jugador;
-     }
-     }  
+    
 
-
-     
-
+   
